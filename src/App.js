@@ -1,23 +1,29 @@
 import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
 
+//RFC
 function App() {
+  //1. States/Variables
+  //Hooks varaible
+  //const [variable, function] = useState(initialData)
+  const [studentName, setStudentName] = useState('ANIL')
+
+  //2.Functions and
+  //Lets create a function with Fat Arrow notation
+  let myFunction = ()=>{
+    console.log(studentName)
+  }
+
+  //3. Return Statements JSX x=XML
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <form>
+        <label>Enter Student Name:<br />
+          <input type="text" value={ studentName } onChange={ (e)=>{ setStudentName(e.target.value)  } }/>
+        </label><br />
+        <input type="button" onClick={ myFunction } name="studentName" value="Save Student" />
+      </form>
     </div>
   );
 }
