@@ -2,6 +2,9 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import swal from 'sweetalert';
 
+//import something from somelibrary
+import { BASE_URL,headers,TOKEN } from './Helper'
+
 //useHOOK
 
 //RFC React Functional Components
@@ -29,11 +32,11 @@ function App() {
       }
     }
     //Promise Chain
-    fetch('https://rocky-fjord-60608.herokuapp.com/api/students',{
+    fetch(BASE_URL+'/api/friends',{ // + concatination operator
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        
+        ...headers
+
       },
       body:JSON.stringify(data)
     }).then((d)=>{
