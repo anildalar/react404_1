@@ -12,7 +12,7 @@ function App() {
   //1. States/Variables
   //Hooks varaible
   //const [variable, setfunction] = useState(initialData)
-  const [studentName, setStudentName] = useState('ANIL')
+  const [studentName, setStudentName] = useState('')
 
 
   //useEffect(<function>, <dependency>)
@@ -39,12 +39,35 @@ function App() {
 
       },
       body:JSON.stringify(data)
-    }).then((d)=>{
-      console.log(d.status);
-      if(d.status === 200){ //Strictly Comparision Operator
-        swal("Good job!", "Data Created Successfully", "success");
+    })
+    .then(response => response.json()) // THis will make your json data readable
+    .then((d)=>{
+
+      //Check if we are receving an eror
+      if ('error' in d){
+        console.log('Error');
+        if(d.error.status === 401){ //Strictly Comparision Operator
+          swal(d.error.name, d.error.message, "error");
+        }
+      }else{
+        // console.log(d)
+        //Success
+        //console.log(d.status);
+        if(Object.keys(d.data).length !== 0){ //Strictly Comparision Operator
+          swal("Good job!", "Data Created Successfully", "success");
+        }
       }
-    }).catch((e)=>{}).finally((all)=>{});
+     
+      
+    }).catch((e)=>{
+      //Error
+      //console.log('MyError',e)
+    }).finally((all)=>{
+
+      //All Case
+    });
+    //Fetch API 
+    //fetch.then.catch.finally
   }
 
   // Ananymous function (e)=>{}  ES6
@@ -55,7 +78,7 @@ function App() {
       { studentName }
       <form>
         <label>Enter Student Name:<br />
-          <input type="text" value={ studentName } onChange={ (e)=>{ setStudentName(e.target.value) }  } />
+          <input autoFocus type="text" value={ studentName } onChange={ (e)=>{ setStudentName(e.target.value) }  } />
         </label><br />
         <input type="button" onClick={ myFunction } name="studentName" value="Save Student" />
       </form>
