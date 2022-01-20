@@ -1,23 +1,64 @@
 import React, { useState } from 'react';
+import env from "react-dotenv";
 
+//RFC 
 export default function Register() {
     //1. State
-    const [ username , setUsername] = useState('A')
-    const [ email , setEmail] = useState('b@gmail.com')
-    const [ password , setPassword] = useState('C')
+    //Hook Variables
+    const [ username , setUsername] = useState('')
+    const [ email , setEmail] = useState('')
+    const [ password , setPassword] = useState('')
 
 
     // localhost:1337/auth/local/register
-    //2Functions
+    //2. Functions
+    let submitData = ()=>{
+        
+        console.log(process.env.API_URL);
+        console.log(username);
+        console.log(email);
+        console.log(password);
+        console.log('Good Morning');
+        var data = {
+            "username":username,
+            "email":email,
+            "password":password
+        }
+        fetch('https://radiant-atoll-79245.herokuapp.com/auth/local/register',{
+            method:"POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Cache-Control': 'no-cache'
+            },
+            body: JSON.stringify(data)
+        }).then((response)=>{
+            response.json()
+        }).then((data)=>{
+            console.log(data) //JSON readable
+        }).catch((error)=>{
+
+        }).finally((all)=>{
+
+        });
+        //http://localhost:1337/auth/local/register
+    }
 
     //3. Return statements
     return (
-        <form>
-            <input type="text" name="username" value={username} /> <br/>
-            <input type="email" name="email" value={email} /><br/>
-            <input type="password" name="password" value={password} /><br/>
-            <input type="submit" name="Submit" /><br/>
-
-        </form>
+        <div className="row">
+            <div className="col-6 offset-3 mt-5">
+                <h1 className="text-center">Registration Form</h1>
+                <form className="">
+                    <input type="text" name="username" className="form-control" placeholder="Username" value={username} onChange={(e)=>{ setUsername(e.target.value)  }} /> <br/>
+                    <input type="email" name="email" className="form-control" placeholder="Email" value={email} onChange={ (e)=>{ setEmail(e.target.value) }} /><br/>
+                    <input type="password" name="password" className="form-control" placeholder="Password" value={password} onChange={ (e)=>{setPassword(e.target.value)}}/><br/>
+                    <div className="d-grid gap-2">
+                        <button className="btn btn-primary" type="button" onClick={ ()=>{ submitData() } }>Button</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
     );
 }
