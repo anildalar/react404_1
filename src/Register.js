@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import env from "react-dotenv";
+//const axios = require('axios');
+
+import axios from 'axios';
 
 //RFC 
 export default function Register() {
@@ -14,7 +16,6 @@ export default function Register() {
     //2. Functions
     let submitData = ()=>{
         
-        console.log(process.env.API_URL);
         console.log(username);
         console.log(email);
         console.log(password);
@@ -24,24 +25,36 @@ export default function Register() {
             "email":email,
             "password":password
         }
-        fetch('https://radiant-atoll-79245.herokuapp.com/auth/local/register',{
-            method:"POST",
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Cache-Control': 'no-cache'
-            },
-            body: JSON.stringify(data)
-        }).then((response)=>{
-            response.json()
-        }).then((data)=>{
-            console.log(data) //JSON readable
-        }).catch((error)=>{
-
-        }).finally((all)=>{
-
+        
+        console.log(data);
+        
+        // Request API.
+        // Add your own code here to customize or restrict how the public can register new users.
+        axios
+        .post('http://localhost:1337/api/auth/local/register', data)
+        .then(response => {
+        // Handle success.
+        console.log('Well done!');
+        console.log('User profile', response.data.user);
+        console.log('User token', response.data.jwt);
+        })
+        .catch(error => {
+        // Handle error.
+        console.log('An error occurred:', error.response);
         });
-        //http://localhost:1337/auth/local/register
+
+        /* axios.post(`http://localhost:1337/auth/local/register`,data)
+        .then(function (response) {
+            //Success
+            console.log(response);
+        })
+        .catch(function (error) {
+            //Error
+            console.log(error);
+        });
+        //http://localhost:1337/auth/local/register */
+
+        
     }
 
     //3. Return statements
