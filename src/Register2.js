@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 //const axios = require('axios');
 import swal from 'sweetalert';
-import axios from 'axios';
-
 //RFC 
-export default function Register() {
+export default function Register2() {
     //1. State
     //Hook Variables
     const [ username , setUsername] = useState('')
@@ -16,10 +14,10 @@ export default function Register() {
     //2. Functions
     let submitData = ()=>{
         
-        console.log(username);
+        /* console.log(username);
         console.log(email);
         console.log(password);
-        console.log('Good Morning');
+        console.log('Good Morning'); */
 
         var data = {
             "username":username,
@@ -27,47 +25,33 @@ export default function Register() {
             "password":password
         }
         
-        console.log(data);
+       // console.log(data);
         
         // Request API.
         // Add your own code here to customize or restrict how the public can register new users.
-        axios
-        .post('http://localhost:1337/api/auth/local/register', data)
-        .then(response => {
-            // Handle success.
-           
-
-            if(response.status == 200){
-                swal("Good job!", "User Registration Successfully", "success");
+        
+        fetch('http://localhost:1337/api/auth/local/register',{
+            method:"POST",
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify(data)
+        })
+        .then((response) => {
+            console.log(response);
+            if(response.status === 200){
+                
+                swal("Good job!", "User Registered Successfully", "success");
             }
-            console.log('Well done!');
-            console.log(response);
-            console.log(response.data.user.email);
-
-            window.localStorage.setItem('userInfo', JSON.stringify(response.data) )
-
-            // JSON OBject ---> Stringify  --->  JSON String
-
-
-
-            //console.log('User profile', response.data.user);
-            //console.log('User token', response.data.jwt);
+            response.json();
         })
-        .catch(error => {
-        // Handle error.
-        console.log('An error occurred:', error.response);
-        });
-
-        /* axios.post(`http://localhost:1337/auth/local/register`,data)
-        .then(function (response) {
-            //Success
-            console.log(response);
+        .then(data => {
+            localStorage.setItem('userInfo', JSON.stringify(data) )
+          console.log('Success:', data);
         })
-        .catch(function (error) {
-            //Error
-            console.log(error);
+        .catch((error) => {
+          console.error('Error:', error);
         });
-        //http://localhost:1337/auth/local/register */
 
         
     }
@@ -76,7 +60,7 @@ export default function Register() {
     return (
         <div className="row">
             <div className="col-6 offset-3 mt-5">
-                <h1 className="text-center">Registration Form</h1>
+                <h1 className="text-center">Registration Form 2</h1>
                 <form className="">
                     <input type="text" name="username" className="form-control" placeholder="Username" value={username} onChange={(e)=>{ setUsername(e.target.value)  }} /> <br/>
                     <input type="email" name="email" className="form-control" placeholder="Email" value={email} onChange={ (e)=>{ setEmail(e.target.value) }} /><br/>
